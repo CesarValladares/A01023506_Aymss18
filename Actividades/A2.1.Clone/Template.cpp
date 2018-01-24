@@ -11,9 +11,9 @@ public:
     int* serial_number; 
     int* ID;
     string type; 
-    string usuario; 
+    string user; 
 
-    Moviles(int serial_number,int ID,string type,string usuario):serial_number(new int(serial_number)), ID(new int(ID)),type(type),usuario(usuario){}
+    Moviles(int serial_number,int ID,string type,string user):serial_number(new int(serial_number)), ID(new int(ID)),type(type),user(user){}
 
     void encender()
     {
@@ -52,32 +52,49 @@ public:
     
     string* branch;  
 
-    Tablet(int serial_number, int ID, string type, string usuario, string branch): Moviles(serial_number, ID, type, usuario), branch(new string(branch)){}
+    Tablet(int sn, int i, string ty, string us, string branch): branch(new string (branch))
+    {
+        serial_number = &sn; 
+        ID = &i;
+        type = ty; 
+        user = us; 
+        branch = branch;
+    }
 
     Tablet (const Tablet& temp)
     {
-        branch = new string(*(this->branch));
+        branch = new string(*(temp.branch));
         serial_number = new int(*(temp.serial_number));
         ID = new int (*(temp.ID));
         type = (temp.type);
-        usuario = (temp.usuario);
+        user = (temp.user);
     }   
 };
 
 class Smartphone : public ClonMovile<Moviles,Smartphone>
 {
 public:
+
+    Smartphone(){};
+    
     int* phone_number; 
 
-    Smartphone(int serial_number, int ID, string type, string usuario, int phone_number): Moviles(serial_number, ID, type, usuario), phone_number(new int (phone_number)){}
+    Smartphone(int sn, int i, string ty, string us, int phone_number): phone_number(new int (phone_number))
+    {
+        serial_number = &sn; 
+        ID = &i;
+        type = ty; 
+        user = us; 
+        phone_number = phone_number;
+    }
 
     Smartphone (const Smartphone& temp)
     {
-        phone_number = new int(*(this->phone_number));
+        phone_number = new int(*(temp.phone_number));
         serial_number = new int(*(temp.serial_number));
         ID = new int (*(temp.ID));
-        type = (temp.type);
-        usuario = (temp.usuario);
+        type = (temp.type);     
+        user = (temp.user);
     }
 }; 
 
@@ -86,30 +103,96 @@ class Smartwatch : public ClonMovile<Moviles,Smartwatch>
 public:
     int* hour;
 
-    Smartwatch(int serial_number, int ID, string type, string usuario, int hour): Moviles(serial_number, ID, type, usuario), hour(new int(hour)){}
-
-    Smartwatch (const Moviles& temp)
+    Smartwatch(int sn, int i, string ty, string us, int hour): hour(new int (hour))
     {
-        hour = new int(*(this->hour));
+        serial_number = &sn; 
+        ID = &i;
+        type = ty; 
+        user = us; 
+        hour = hour;
+    }
+
+    Smartwatch (const Smartwatch &temp)
+    {
+        hour = new int(*(temp.hour));
         serial_number = new int(*(temp.serial_number));
         ID = new int (*(temp.ID));
         type = (temp.type);
-        usuario = (temp.usuario);
+        user = (temp.user);
     }
 };
 
 int main()
 {
-    Tablet* T1 = new Tablet(5555, 525, "IPAD", "Iñigo", "Apple"); 
-    cout << "ANTES"<< endl;
+    //Tablet
+    Tablet * T1 = new Tablet();
+    T1->branch = new string("Apple");
+    T1->serial_number = new int(5585);
+    T1->ID = new int(6565656);
+    T1->type = "IPAD Pro";
+    T1->user = "César";
+
+    cout << "-----------------Tablet 1---------------------" << endl;
+    T1->encender();
+    T1->apagar();
+    T1->reiniciar();
+    T1->restaurar();
+
+    cout << "T1 Branch:         " << *T1->branch << endl;
+    cout << "T1 Serial number:  " << *T1->serial_number << endl;
+    cout << "T1 ID:             " << *T1->ID << endl;
+    cout << "T1 Type:           " << T1->type << endl; 
+    cout << "T1 User:           " << T1->user << endl;
     cout << endl;
-    cout << "Tablet 1: "<< *T1->branch << endl;
-    /*Tablet T2 = *T1;
-    cout << "Tablet 2: "<< *T2.branch << endl;
+
+    Tablet* T2 = dynamic_cast<Tablet*>(T1->clone());  
+
+    
+    cout << "-----------------CLONE T1---------------------" << endl;
+    T2->serial_number = new int(5584545);
+    T2->user = "Armando";
+    cout << "T2 Branch:         " << *T2->branch << endl;
+    cout << "T2 Serial number:  " << *T2->serial_number << endl;
+    cout << "T2 ID:             " << *T2->ID << endl;
+    cout << "T2 Type:           " << T2->type << endl; 
+    cout << "T2 User:           " << T2->user << endl;  
     cout << endl;
-    cout << "DESPUES" << endl;
-    cout << "Tablet 1: "<< *T1->branch << endl;
-    *T2.branch = "Samsung";
-    cout << "Tablet 2: "<< *T2.branch << endl;*/
+
+    //Smartphone
+    Smartphone * S1 = new Smartphone();
+    S1->phone_number = new int(55365588);
+    S1->serial_number = new int(5585);
+    S1->ID = new int(6565656);
+    S1->type = "Samgung Galaxy";
+    S1->user = "César";
+
+    cout << "--------------Smartphone 1---------------------" << endl;
+    S1->encender();
+    S1->apagar();
+    S1->reiniciar();
+    S1->restaurar();
+
+    cout << "S1 Phone number:   " << *S1->phone_number << endl;
+    cout << "S1 Serial number:  " << *S1->serial_number << endl;
+    cout << "S1 ID:             " << *S1->ID << endl;
+    cout << "S1 Type:           " << S1->type << endl; 
+    cout << "S1 User:           " << S1->user << endl;
+    cout << endl;
+
+    Smartphone* S2 = dynamic_cast<Smartphone*>(S1->clone());
+
+    cout << "-----------------CLONE S1---------------------" << endl;
+    S2->serial_number = new int(5584545);
+    S2->phone_number = new int(558855);
+    S2->user = "Armando";
+    cout << "S2 Branch:         " << *S2->phone_number << endl;
+    cout << "S2 Serial number:  " << *S2->serial_number << endl;
+    cout << "S2 ID:             " << *S2->ID << endl;
+    cout << "S2 Type:           " << S2->type << endl; 
+    cout << "S2 User:           " << S2->user << endl;  
+    cout << endl;
+
+
+
     return 0; 
 }
