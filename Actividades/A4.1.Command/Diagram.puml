@@ -1,0 +1,13 @@
+@startuml Diagram
+    class Parent{
+        int a; 
+        void function();
+    }
+
+    class child{
+        int a; 
+        void function();
+    }
+
+    Parent <|-- child
+@end 
