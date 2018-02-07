@@ -1,0 +1,59 @@
+@startuml
+
+class Search{
+    +getData(string Auth, date Date): float
+    +createOffer(float price)
+}
+class Client{
+    -Name: string
+    +setName()
+}
+class Offer{
+    -Price: float
+    -Paint: Paint
+    +getInfo()
+}
+class Venta{
+    -Name: string
+    -Direction: string
+    -Price: float
+    -Date: date
+    +setName()
+    +setDirection()
+    +setPrice()
+    +setDate()
+}
+class Gallery{
+    -NumbPa: int
+    -Paintings: Paint
+}
+Class Paint{
+    -Price: float
+    -Author: string
+    +getInfo()
+}
+Class Auctions{
+    -listAucti: Auction
+    +getInfo(string Auth, date Date)
+}
+class Auction{
+    -Paintings: Paint
+    -Costo: float
+    -Date: date
+    +getAuthor()
+    +getDate()
+    +getCost()
+}
+
+Gallery o-- Paint
+Auctions o-- Auction
+Search --> Offer
+Search->Gallery
+Paint->Auctions
+Offer - Client
+(Offer, Client) -- Venta
+
+
+
+
+@enduml
