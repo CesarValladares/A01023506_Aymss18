@@ -1,13 +1,28 @@
 @startuml Diagram
-    class Parent{
-        int a; 
-        void function();
+    class Invoker {
+
     }
 
-    class child{
-        int a; 
-        void function();
+    class command <<interface>>{
+        +execute();
     }
 
-    Parent <|-- child
-@end 
+    class concreteCommand{
+        +execute();
+    }
+
+    class Receiver{
+        +Action();
+    }
+
+    class Client{
+
+    }
+
+    Invoker o-- command 
+    command <|.. concreteCommand
+    Receiver <|-- concreteCommand
+    Receiver <|-- Client
+    concreteCommand <|.. Client
+
+@enduml
