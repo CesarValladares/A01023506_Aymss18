@@ -1,0 +1,17 @@
+@startuml
+    left to right direction 
+    skinparam packageStyle rectangle
+    actor Cliente
+    actor Mar_Que_Tin
+
+    rectangle Anuncio{
+        Mar_Que_Tin -- (Enviar SMS) 
+        (Enviar SMS) -- Cliente
+        Mar_Que_Tin -- (Enviar llamada) 
+        (Enviar llamada) -- Cliente
+        Mar_Que_Tin -- (Enviar Correo) 
+        (Enviar Correo) -- Cliente
+
+        
+    }
+@enduml

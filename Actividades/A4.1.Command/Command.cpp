@@ -26,7 +26,7 @@ public:
 class LightOnCommand : public Command 
 {
 public:
-        LightOnCommand(Light *light) : mLight(light) {}
+    LightOnCommand(Light *light) : mLight(light) {}
 	void execute(){
 		mLight->on();
 	}
