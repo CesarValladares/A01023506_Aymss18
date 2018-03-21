@@ -1,0 +1,61 @@
+@startuml Diagram
+
+class Text{
+    +void accept(IVisitor* visitor)
+}
+
+class HyperLink{
+    +string:URL
+    +void accept(IVisitor* visitor)
+}
+
+class Bold{
+    +void accept(IVisitor* visitor)
+}
+
+class DocPart{
+    +string:text
+    + virtual void accept(IVisitor*)
+}
+
+class Document{
+    +list<DocPart> docpart
+}
+
+class IVisitor{
+    +string out;
+    +virtual void visit (HyperLink)
+    +virtual void visit (Text)
+    +virtual void visit (Bold)
+}
+
+class HTMLVisitor{
+    +void visit(HyperLink h)
+    +void visit(Text t)
+    +void visit(Bold b)
+}
+
+class TextVisitor{
+    +void visit(HyperLink h)
+    +void visit(Text t)
+    +void visit(Bold b)
+}
+
+class Latexvisitor{
+    +void visit(HyperLink h)
+    +void visit(Text t)
+    +void visit(Bold b)
+}
+
+IVisitor <|-- HTMLVisitor
+IVisitor <|-- Latexvisitor
+IVisitor <|-- TextVisitor
+
+Document --> DocPart
+DocPart <|-- Text
+DocPart <|-- HyperLink
+DocPart <|-- Bold
+
+Document <-> IVisitor
+
+@enduml
