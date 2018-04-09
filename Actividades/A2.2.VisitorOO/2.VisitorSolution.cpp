@@ -12,21 +12,27 @@ public:
     virtual void accept(IVisitor*)=0;
 };
 
+template <class T>
+class VisitorImplementation : public DocPart{
+    void accept(IVisitor* visitor){
+        visitor->accept(*T)
+    }
+}
 
-class Text : public DocPart{
+class Text : public DocPart, VisitorImplementation<Text>{
 public:
     void accept(IVisitor* visitor);
     
 };
 
-class HyperLink : public DocPart{
+class HyperLink : public DocPart, VisitorImplementation<HyperLink>{
 public:
 
     string URL;
     void accept(IVisitor* visitor);
 };
 
-class Bold : public DocPart{
+class Bold : public DocPart, VisitorImplementation<Bold>{
 public:
     void accept(IVisitor* visitor);
     
@@ -79,7 +85,7 @@ public:
     }
 };
 
-void Text::accept(IVisitor* visitor){
+/*void Text::accept(IVisitor* visitor){
     visitor->visit(*this);
 }
 
@@ -89,7 +95,7 @@ void Bold::accept(IVisitor* visitor){
 
 void HyperLink::accept(IVisitor* visitor){
     visitor->visit(*this);
-}
+}*/
 
 
 class Document{
