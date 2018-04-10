@@ -33,6 +33,9 @@ public:
     void PuebasAcpt(){
         cout << "Puebas de aceptación..." << endl;
     }
+    void setPrice(float p){
+        precio = p; 
+    }
 };
 
 
@@ -149,6 +152,15 @@ public:
         return act;
     }
 
+    void imprimirColl(){
+        for (int i = 0; i < act; i++){
+            cout << "name = " << array[i]->name <<
+             ", " << "Company = " << array[i]->company << 
+             ",  " << "Console = " << array[i]->console <<
+             ",  " << "Price = " << array[i]->precio << endl;
+        }
+    }
+
     Iterator<T>* getIterator();
 };
 
@@ -193,7 +205,7 @@ public:
     void crearjuego(){
         Inventario* inventario = new Inventario(); 
     }
-    void agregarvideojuego (videojuego* v){
+    void addGame (videojuego* v){
         it = inv.getIterator();
         inv.add(v);
         i++;
@@ -201,6 +213,10 @@ public:
 
     int getElements(){
         return inv.getNumElements();
+    }
+
+    void imprimir(){
+        inv.imprimirColl();
     }
 
 };
@@ -267,17 +283,24 @@ private:
 
 int main()
 {
-    Inventario* uno = new Inventario();
+    /*Inventario* uno = new Inventario();
 
     Lucha* g1 = new Lucha(); 
     Idiomas* g2 = new Idiomas();
     Musica* g3 = new Musica();
 
-    uno->agregarvideojuego(g1);
-    uno->agregarvideojuego(g2);
-    uno->agregarvideojuego(g3);
+    g1->setPrice(12.8);
+    g2->setPrice(20.4);
+    g3->setPrice(25.6);
+
+
+    uno->addGame(g1);
+    uno->addGame(g2);
+    uno->addGame(g3);
 
     cout << uno->getElements() << endl; 
+
+    uno->imprimir();
 
     //receiver
     Accion * accion = new Accion;
@@ -290,7 +313,39 @@ int main()
 	RemoteControl *control = new RemoteControl;
 
     control->setCommand(redo);
-    control->buttonPressed();
+    control->buttonPressed();*/
+    
+    system("clear");
+
+
+    Inventario* uno = new Inventario();
+
+    cout << "Bienvenido a nuestro sistema de inventario, ¿qué desea hacer?" << endl;
+    cout << 
+    "1.- Agregar un nuevo juego al inventario\n"
+    "2.- Borrar un juego del invantario\n" 
+    "3.- Revisar inventario\n" 
+    "4.- Buscar Juego\n" << endl;
+
+    int a;
+    cin >> a;
+
+    system("clear");
+
+    switch(a){
+        case 1:
+            cout << "Agregar juego" << endl;
+            break;
+        case 2:
+            cout << "Borrar juego" << endl;
+            break;
+        case 3:
+            cout << "Revisar" << endl;
+            break;
+        case 4:
+            cout << "Buscar" << endl;
+    }
+
 
 
   
