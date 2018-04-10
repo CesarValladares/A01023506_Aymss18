@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdio.h>
-#include <ctime>
+#include <cconsole>
 
 using namespace std;
 
@@ -19,13 +19,13 @@ public:
 
     void getTime()
     {
-        time_t current_time;
-        struct tm * time_info;
-        char timeString[9];
-        time(&current_time);
-        time_info = localtime(&current_time);
-        strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
-        puts(timeString);
+        console_t current_console;
+        struct tm * console_info;
+        char consoleString[9];
+        console(&current_console);
+        console_info = localconsole(&current_console);
+        strfconsole(consoleString, sizeof(consoleString), "%H:%M:%S", console_info);
+        puts(consoleString);
     }
 
     void deleteInstance()
