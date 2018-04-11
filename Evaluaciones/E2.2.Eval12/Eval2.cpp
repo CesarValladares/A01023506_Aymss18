@@ -134,7 +134,9 @@ public:
 
     void add(T game){
         if (act <= max){
-            array[act++] = game; 
+            game->serie = act;
+            array[act++] = game;
+
         }
         else{
             cout << "Espacio en el inventario insuficiente" << endl;
@@ -154,10 +156,41 @@ public:
 
     void imprimirColl(){
         for (int i = 0; i < act; i++){
-            cout << "name = " << array[i]->name <<
-             ", " << "Company = " << array[i]->company << 
-             ",  " << "Console = " << array[i]->console <<
-             ",  " << "Price = " << array[i]->precio << endl;
+            cout << "Nombre = " << array[i]->name <<
+             ", " << "Compañia = " << array[i]->company << 
+             ",  " << "Consola = " << array[i]->console <<
+             ",  " << "Precio = " << array[i]->precio <<
+             ",  " << "No. Serie = " << array[i]->serie << endl;
+        }
+    }
+
+    void buscarColln(string n){
+        for(int i = 0; i < act; i++){
+            if (n == array[i]->name){
+                cout << "No. Serie: " << array[i]->serie << endl;
+                cout << "Nombre: "<< array[i]->name << endl;
+                cout << "Compañia: " << array[i]->company << endl;
+                cout << "Consola: " << array[i]->console << endl;
+                cout << "Precio: " << array[i]->precio << endl;
+            }
+            else{
+                cout << "El juego buscado no se encuentra en el inventario" << endl;
+            }
+        }
+    }
+
+    void buscarColli(int n){
+        for(int i = 0; i < act; i++){
+            if (n == array[i]->serie){
+                cout << "No. Serie: " << array[i]->serie << endl;
+                cout << "Nombre: "<< array[i]->name << endl;
+                cout << "Compañia: " << array[i]->company << endl;
+                cout << "Consola: " << array[i]->console << endl;
+                cout << "Precio: " << array[i]->precio << endl;
+            }
+            else{
+                cout << "El juego buscado no se encuentra en el inventario" << endl;
+            }
         }
     }
 
@@ -193,6 +226,7 @@ Iterator<T>* Collection<T>:: getIterator(){
     return new Iterator<T>(*this);
 } 
 
+
 class Inventario{
 protected: 
     int i = 1;
@@ -219,6 +253,13 @@ public:
         inv.imprimirColl();
     }
 
+    void buscarN(string n){
+        inv.buscarColln(n);
+    }
+
+    void buscarI(int n){
+        inv.buscarColli(n);
+    }
 };
 
 //COMMANDS
@@ -278,11 +319,172 @@ public:
 private:
 	Command *mCmd;
 };
- 
+
+Inventario* uno = new Inventario();
+
+void submenu(int a);
+
+void MenuPrincipal(){
+
+    cout << "\nBienvenido a nuestro sistema de inventario, ¿qué desea hacer?" << endl;
+    cout << 
+    "1.- Agregar un nuevo juego al inventario\n"
+    "2.- Borrar un juego del invantario\n" 
+    "3.- Revisar inventario\n" 
+    "4.- Buscar Juego\n" << endl;
+
+    int a;
+    cin >> a;
+
+    submenu(a);
+    
+}
+
+void submenu(int a){
+
+    switch(a){
+        case 1:{
+            cout << "Tipo de juego que se quiere agregar\n"
+            "A.- Estrategia\n"
+            "B.- Aventura\n"
+            "C.- Aprendizaje\n" << endl;
+            char b; 
+            cin >> b;
+            switch(b){
+                
+                case 'A':{
+                    cout << "Juego que se desea agregar\n"
+                    "L.- Lucha\n"
+                    "R.- Arcade\n" << endl;
+                    char c;
+                    cin >> c;
+                    switch(c){
+                        case 'L':{
+                            cout << "Agregar precio" << endl;
+                            float p; 
+                            cin >> p;
+                            Lucha* g1 = new Lucha(); 
+                            g1->setPrice(p);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                        }
+                        case 'R':
+                            cout << "Agregar precio" << endl;
+                            float p2; 
+                            cin >> p2;
+                            Arcade* g1 = new Arcade(); 
+                            g1->setPrice(p2);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                    }
+                    break;
+                }
+                case 'B':{
+                cout << "Juego que se desea agregar\n"
+                    "P.- Plataforma\n"
+                    "G.- Grafica\n" << endl;
+                    char c1;
+                    cin >> c1;
+                    switch(c1){
+                        case 'P':{
+                            cout << "Agregar precio" << endl;
+                            float p3; 
+                            cin >> p3;
+                            Plataforma* g1 = new Plataforma();
+                            g1->setPrice(p3);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                        }
+                        case 'G':{
+                            cout << "Agregar precio" << endl;
+                            float p4; 
+                            cin >> p4;
+                            Grafica* g1 = new Grafica();
+                            g1->setPrice(p4);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                        }
+                    }
+                }
+                case 'C':{
+                    cout << "Juego que se desea agregar\n"
+                    "I.- Idiomas\n"
+                    "M.- Musica\n" << endl;
+                    char c1;
+                    cin >> c1;
+                    switch(c1){
+                        case 'I':{
+                            cout << "Agregar precio" << endl;
+                            float p5; 
+                            cin >> p5;
+                            Idiomas* g1 = new Idiomas();
+                            g1->setPrice(p5);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                        }
+                        case 'M':{
+                            cout << "Agregar precio" << endl;
+                            float p6; 
+                            cin >> p6;
+                            Musica* g1 = new Musica();
+                            g1->setPrice(p6);
+                            uno->addGame(g1);
+                            MenuPrincipal();
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        
+        case 2:
+            cout << "Borrar juego" << endl;
+            break;
+        case 3:
+            cout << "Revisar" << endl;
+            cout << uno->getElements() << endl;
+            uno->imprimir();
+            MenuPrincipal();
+            
+        case 4:
+            cout << "Buscar por: \n"
+            "I.- No.Serie\n"
+            "N.- Nombre" << endl;
+            char j;
+            cin >> j;
+            switch(j){
+                case 'I':{
+                    cout << "Ingresar No. de Serie" << endl;
+                    int busq; 
+                    cin >> busq;
+                    uno->buscarI(busq);
+                    MenuPrincipal();
+                    break;
+                }
+                case 'N':{
+                    cout << "ingresar Nombre" << endl;
+                    string busqn;
+                    cin >> busqn;
+                    uno->buscarN(busqn);
+                    MenuPrincipal();
+                    break;
+                }
+            }
 
 
-int main()
-{
+            break;
+        }
+    }
+        
+
+}
+
+int main(){
     /*Inventario* uno = new Inventario();
 
     Lucha* g1 = new Lucha(); 
@@ -315,39 +517,7 @@ int main()
     control->setCommand(redo);
     control->buttonPressed();*/
     
-    system("clear");
-
-
-    Inventario* uno = new Inventario();
-
-    cout << "Bienvenido a nuestro sistema de inventario, ¿qué desea hacer?" << endl;
-    cout << 
-    "1.- Agregar un nuevo juego al inventario\n"
-    "2.- Borrar un juego del invantario\n" 
-    "3.- Revisar inventario\n" 
-    "4.- Buscar Juego\n" << endl;
-
-    int a;
-    cin >> a;
-
-    system("clear");
-
-    switch(a){
-        case 1:
-            cout << "Agregar juego" << endl;
-            break;
-        case 2:
-            cout << "Borrar juego" << endl;
-            break;
-        case 3:
-            cout << "Revisar" << endl;
-            break;
-        case 4:
-            cout << "Buscar" << endl;
-    }
-
-
-
+    MenuPrincipal();
   
     return 0;
 }
