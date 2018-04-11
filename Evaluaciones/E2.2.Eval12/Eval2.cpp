@@ -4,6 +4,8 @@
 
 using namespace std;
 
+class IVisitor;
+
 class videojuego{
 public: 
     int serie;
@@ -36,6 +38,7 @@ public:
     void setPrice(float p){
         precio = p; 
     }
+    void accept(IVisitor* visitor, float a);
 };
 
 
@@ -43,16 +46,22 @@ public:
 class Estrategia : public videojuego {
 protected: 
     Estrategia() = default;
+public:
+    void accept(IVisitor* visitor, float a);
 };
 
 class Aventura : public videojuego{
 protected: 
     Aventura() = default;
+public: 
+    void accept(IVisitor* visitor, float a);
 };
 
 class Aprendizaje :public videojuego{
 protected: 
     Aprendizaje() = default;
+public:
+    void accept(IVisitor* visitor, float a);
 };
 
 //ESTRATEGIA
@@ -116,6 +125,47 @@ public:
 
 template<class T>
 class Iterator;
+
+class IVisitor{
+public: 
+    virtual void visit(Estrategia, float a)=0;
+    virtual void visit(Aventura, float a)=0;
+    virtual void visit(Aprendizaje, float a)=0;
+};
+
+class Aumento : public IVisitor{
+public:
+    void visit (Estrategia s, float a)
+    {
+        float b = a/10;
+        s.precio = s.precio * (1 + b);
+    }
+    void visit (Aventura s, float a){
+        float b = a/10;
+        s.precio = s.precio * (1 + b);
+    }
+    void visit (Aprendizaje s, float a){
+        float b = a/10;
+        s.precio = s.precio * (1 + b);
+    }
+};
+
+class Descuento : public IVisitor{
+public:
+    void visit (Estrategia s, float a)
+    {
+        float b = a/10;
+        s.precio = s.precio - s.precio * 1 + b;
+    }
+    void visit (Aventura s, float a){
+        float b = a/10;
+        s.precio = s.precio - s.precio * 1 + b;
+    }
+    void visit (Aprendizaje s, float a){
+        float b = a/10;
+        s.precio = s.precio - s.precio * 1 + b;
+    }
+};
 
 template<class T>
 class Collection{
@@ -194,6 +244,40 @@ public:
         }
     }
 
+    void borrarCollN(string n){
+        for(int i = 0; i < act; i++){
+            if (n == array[i]->name){
+                array[i] = NULL;
+                act--;
+            }
+        }
+    }
+
+    void borrarCollI(int n){
+        for(int i = 0; i < act; i++){
+            if (n == array[i]->serie){
+                array[i] = NULL;
+                act--;
+            }
+        }
+    }
+
+    void accept(IVisitor* visitor, float a){
+        for(int i = 0; i < act; i++){
+            array[i]->accept(visitor, a);
+        }
+    }
+
+    void ModPrice(string s, float a){
+        if (s == "aumentar"){
+            Aumento* aumento = new Aumento();
+            accept(aumento, a);
+        }else{
+            Descuento* descuento = new Descuento();
+            accept(descuento, a);
+        }
+    }
+
     Iterator<T>* getIterator();
 };
 
@@ -260,7 +344,22 @@ public:
     void buscarI(int n){
         inv.buscarColli(n);
     }
+
+    void borrarN(string n){
+        inv.borrarCollN(n);
+    }
+
+    void borrarI(int n){
+        inv.borrarCollI(n);
+    }
+
+    void ModTPrice(string s, float a){
+        inv.ModPrice(s,a);
+    }
+
+   
 };
+
 
 //COMMANDS
 
@@ -320,7 +419,21 @@ private:
 	Command *mCmd;
 };
 
+
 Inventario* uno = new Inventario();
+
+void Estrategia::accept(IVisitor* visitor, float a){
+    visitor->visit(*this, a);
+}
+void Aventura::accept(IVisitor* visitor, float a){
+    visitor->visit(*this, a);
+}
+void Aprendizaje::accept(IVisitor* visitor, float a){
+    visitor->visit(*this, a);
+}
+
+
+
 
 void submenu(int a);
 
@@ -331,7 +444,8 @@ void MenuPrincipal(){
     "1.- Agregar un nuevo juego al inventario\n"
     "2.- Borrar un juego del invantario\n" 
     "3.- Revisar inventario\n" 
-    "4.- Buscar Juego\n" << endl;
+    "4.- Buscar Juego\n"
+    "5.- Modificar precio\n" << endl;
 
     int a;
     cin >> a;
@@ -443,13 +557,35 @@ void submenu(int a){
             }
         
         case 2:
-            cout << "Borrar juego" << endl;
+            cout << "Borrar por:\n" 
+            "S.- No.serie\n"
+            "O.- Nombre" << endl;
+            char k;
+            cin >> k;
+            switch(k){
+                case 'S':{
+                    cout << "Ingresar No. de Serie" << endl;
+                    int busq; 
+                    cin >> busq;
+                    uno->borrarI(busq);
+                    MenuPrincipal();
+                    break;
+                }
+                case 'O':{
+                    cout << "ingresar Nombre" << endl;
+                    string busqn;
+                    cin >> busqn;
+                    uno->borrarN(busqn);
+                    MenuPrincipal();
+                    break;
+                }
+            }
             break;
         case 3:
-            cout << "Revisar" << endl;
-            cout << uno->getElements() << endl;
+            cout << "Numero de elementos: "<< uno->getElements() << endl;
             uno->imprimir();
             MenuPrincipal();
+            break;
             
         case 4:
             cout << "Buscar por: \n"
@@ -475,35 +611,16 @@ void submenu(int a){
                     break;
                 }
             }
-
-
+            break;
+        case 5:
+            //uno->ModTPrice("aumentar", 10);
             break;
         }
-    }
-        
-
+    }  
 }
 
 int main(){
-    /*Inventario* uno = new Inventario();
-
-    Lucha* g1 = new Lucha(); 
-    Idiomas* g2 = new Idiomas();
-    Musica* g3 = new Musica();
-
-    g1->setPrice(12.8);
-    g2->setPrice(20.4);
-    g3->setPrice(25.6);
-
-
-    uno->addGame(g1);
-    uno->addGame(g2);
-    uno->addGame(g3);
-
-    cout << uno->getElements() << endl; 
-
-    uno->imprimir();
-
+    /*
     //receiver
     Accion * accion = new Accion;
 
