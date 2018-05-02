@@ -7,7 +7,7 @@ using namespace std;
 class IVisitor;
 
 class DocPart{
-public: 
+public:
     string text;
     virtual void accept(IVisitor*)=0;
 };
@@ -15,14 +15,14 @@ public:
 template <class T>
 class VisitorImplementation : public DocPart{
     void accept(IVisitor* visitor){
-        visitor->accept(*T)
+        visitor->accept(*T);
     }
 }
 
 class Text : public DocPart, VisitorImplementation<Text>{
 public:
     void accept(IVisitor* visitor);
-    
+
 };
 
 class HyperLink : public DocPart, VisitorImplementation<HyperLink>{
@@ -35,7 +35,7 @@ public:
 class Bold : public DocPart, VisitorImplementation<Bold>{
 public:
     void accept(IVisitor* visitor);
-    
+
 };
 
 class IVisitor{
@@ -47,7 +47,7 @@ public:
 };
 
 class HTMLVisitor : public IVisitor{
-public: 
+public:
     void visit(HyperLink h){
         out += "<a = href='" + h.URL + "'>" + h.text + "</a>";
     }
@@ -73,7 +73,7 @@ public:
 };
 
 class TextVisitor : public IVisitor{
-public: 
+public:
     void visit(HyperLink h){
         out += h.text + " " + h.URL;
     }
